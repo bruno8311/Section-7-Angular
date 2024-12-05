@@ -13,7 +13,6 @@ export class HomePageComponent {
   }
 
   get gifsList(): Gifs[] {
-    console.log("LOS GIFS: ",[...this.gifService.gifsSearchList] )
     return [...this.gifService.gifsSearchList]
   }
 

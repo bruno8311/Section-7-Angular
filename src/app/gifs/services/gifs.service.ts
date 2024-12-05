@@ -14,7 +14,9 @@ export class GifsService {
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+    this.getItemStorage();
+  }
 
   get tagsHistory() {
     return [...this._tagsHistory];
@@ -25,18 +27,18 @@ export class GifsService {
   }
 
   private organizeHistory( tag: string) {
-    tag = tag.toLowerCase();
+    tag = tag.toLowerCase()
     if(this.tagsHistory.includes(tag)){
-      this._tagsHistory = this._tagsHistory.filter(oldTag => { oldTag  !== tag})
-    };
+      this._tagsHistory = this._tagsHistory.filter(oldTag => oldTag !== tag);
+    }
     this._tagsHistory.unshift(tag);
     this._tagsHistory = this._tagsHistory.splice(0,9);
+    this.saveTagInStorage();
   }
 
   public searchTag(tag: string) {
     if(tag.length === 0) return;
     this.organizeHistory(tag);
-
     const httpParams = new HttpParams()
       .set('api_key',this.apiKey)
       .set('q',tag)
@@ -46,7 +48,17 @@ export class GifsService {
         this.gifList = resp.data;
       }
     )
+  }
 
+  public saveTagInStorage() {
+    localStorage.setItem('gifs', JSON.stringify(this._tagsHistory))
+  }
+
+  public getItemStorage() {
+    if(!localStorage.getItem('gifs')) return;
+    this._tagsHistory =  JSON.parse(localStorage.getItem('gifs')!);
+     if(this._tagsHistory.length === 0) return;
+     this.searchTag(this._tagsHistory[0])
   }
 
 }

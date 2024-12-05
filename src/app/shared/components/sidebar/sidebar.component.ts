@@ -7,7 +7,9 @@ import { GifsService } from 'src/app/gifs/services/gifs.service';
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent { 
-  constructor( private gifsService: GifsService) {
+  constructor( 
+    private gifsService: GifsService
+  ) {
 
   }
 
